@@ -30,7 +30,7 @@ public class NewsListPresenterImpl extends MvpBasePresenter<NewsListContract.New
 
     @Override
     public void onLoad() {
-        Disposable disposable = mNewsModel.getTopHeadlinesByCountry("", "", "",
+        Disposable disposable = mNewsModel.getTopHeadlinesByCountry("ua", null, null,
                 20, 0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

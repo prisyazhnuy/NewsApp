@@ -4,10 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.prisyazhnuy.newsapp.R;
 import com.prisyazhnuy.newsapp.data.pojo.Article;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -36,6 +38,11 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter<NewsRecycleView
         holder.mItem = mValues.get(position);
         holder.mTvTitle.setText(mValues.get(position).getTitle());
         holder.mTvDescription.setText(mValues.get(position).getDescription());
+        Picasso.with(holder.mView.getContext())
+                .load(holder.mItem.getUrlToImage())
+                .resize(50, 50)
+                .centerCrop()
+                .into(holder.mIvIcon);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,12 +64,14 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter<NewsRecycleView
         public final View mView;
         public final TextView mTvTitle;
         public final TextView mTvDescription;
+        public final ImageView mIvIcon;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mTvTitle = (TextView) view.findViewById(R.id.tvTitle);
             mTvDescription = (TextView) view.findViewById(R.id.tvDescription);
+            mIvIcon = view.findViewById(R.id.ivIcon);
         }
     }
 }
