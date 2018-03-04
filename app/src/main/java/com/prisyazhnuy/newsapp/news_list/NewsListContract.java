@@ -14,10 +14,13 @@ public interface NewsListContract {
 
     interface NewsListView extends MvpView {
         void showNews(List<Article> articles);
-        void showError();
+
+        void showError(String error);
+
+        void showEmptyList();
     }
 
-    interface NewsListPresenter extends MvpPresenter<NewsListView> {
-        void onLoad();
+    interface NewsListPresenter<T extends MvpView> extends MvpPresenter<T> {
+        void loadNews();
     }
 }

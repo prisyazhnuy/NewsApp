@@ -6,19 +6,10 @@ import java.util.List;
  * max.pr on 02.03.2018.
  */
 
-public class NewsResponse {
+public class NewsResponse extends BaseResponse {
 
-    private String status;
     private int totalResults;
     private List<Article> articles;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public int getTotalResults() {
         return totalResults;

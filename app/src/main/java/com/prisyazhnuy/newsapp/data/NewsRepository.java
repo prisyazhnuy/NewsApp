@@ -26,12 +26,12 @@ public class NewsRepository implements NewsModel {
     }
 
     @Override
-    public Observable<NewsResponse> getTopHeadlinesByCountry(String country, String category, String query, int pageSize, int page) {
-        return mApiService.getTopHeadlinesByCountry(country, category, query, pageSize, page);
+    public Observable<NewsResponse> getAllNews(int pageSize, int page) {
+        return mApiService.getAllNews(pageSize, page);
     }
 
     @Override
-    public Observable<NewsResponse> getTopHeadlinesBySource(String sources, String query, int pageSize, int page) {
-        return mApiService.getTopHeadlinesBySource(sources, query, pageSize, page);
+    public Observable<NewsResponse> getNewsByFilter(String source, String from, String to, String sortBy, int pageSize, int page) {
+        return mApiService.getNewsByFilter(source, from, to, sortBy, pageSize, page);
     }
 }

@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">NewsApp</string>
 
+    <string name="preference_file_key">com.prisyazhny.newsapp.cache</string>
+    <string name="sort_title">Sort by:</string>
+    <string name="sort_by_published_date">Published date</string>
+    <string name="sort_by_popularity">Popularity</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="filter_title">Filter</string>
+    <string name="sources_title">Sources:</string>
+    <string name="date_from_title">From:</string>
+    <string name="date_to_title">To:</string>
+    <string name="no_sources">Empty source list</string>
+    <string name="no_news">There is no news</string>
 </resources>

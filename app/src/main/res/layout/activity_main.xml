@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.prisyazhnuy.newsapp.MainActivity">
 
     <fragment
-        android:id="@+id/news_list_fragment"
+        android:id="@+id/sortFragment"
+        android:name="com.prisyazhnuy.newsapp.sort.SortFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.prisyazhnuy.newsapp.news_list.NewsListFragment"
+        android:layout_height="wrap_content"
         />
 
-</RelativeLayout>
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.prisyazhnuy.newsapp.filter.FilterFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <fragment
+        android:id="@+id/newsListFragment"
+        android:name="com.prisyazhnuy.newsapp.news_list.NewsListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</LinearLayout>

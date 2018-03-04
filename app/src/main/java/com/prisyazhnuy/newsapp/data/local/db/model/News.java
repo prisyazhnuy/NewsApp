@@ -1,32 +1,22 @@
-package com.prisyazhnuy.newsapp.data.pojo;
+package com.prisyazhnuy.newsapp.data.local.db.model;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
- * max.pr on 02.03.2018.
+ * max.pr on 04.03.2018.
  */
 
-public class Article {
+public class News extends RealmObject {
 
+    @PrimaryKey
     private long id;
-    private Source source;
     private String author;
     private String title;
     private String description;
     private String url;
-    private String urlToImage;
+    private String pathToImage;
     private String publishedAt;
-
-    @Override
-    public String toString() {
-        return "Article{" +
-                "source=" + source +
-                ", author='" + author + '\'' +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", url='" + url + '\'' +
-                ", urlToImage='" + urlToImage + '\'' +
-                ", publishedAt='" + publishedAt + '\'' +
-                '}';
-    }
 
     public long getId() {
         return id;
@@ -34,14 +24,6 @@ public class Article {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Source getSource() {
-        return source;
-    }
-
-    public void setSource(Source source) {
-        this.source = source;
     }
 
     public String getAuthor() {
@@ -76,12 +58,12 @@ public class Article {
         this.url = url;
     }
 
-    public String getUrlToImage() {
-        return urlToImage;
+    public String getPathToImage() {
+        return pathToImage;
     }
 
-    public void setUrlToImage(String urlToImage) {
-        this.urlToImage = urlToImage;
+    public void setPathToImage(String pathToImage) {
+        this.pathToImage = pathToImage;
     }
 
     public String getPublishedAt() {
@@ -91,5 +73,4 @@ public class Article {
     public void setPublishedAt(String publishedAt) {
         this.publishedAt = publishedAt;
     }
-
 }
