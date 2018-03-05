@@ -18,9 +18,13 @@ public interface NewsListContract {
         void showError(String error);
 
         void showEmptyList();
+
+        void clearList();
     }
 
     interface NewsListPresenter<T extends MvpView> extends MvpPresenter<T> {
-        void loadNews();
+        void loadBreakNews();
+
+        void loadNextNews();
     }
 }

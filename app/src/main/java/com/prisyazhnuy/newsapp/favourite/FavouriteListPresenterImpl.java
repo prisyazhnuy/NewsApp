@@ -29,7 +29,7 @@ public class FavouriteListPresenterImpl extends MvpBasePresenter<FavouriteListCo
     }
 
     @Override
-    public void loadNews() {
+    public void loadBreakNews() {
         Disposable disposable = mNewsDAO.getAll()
                 .subscribe(new Consumer<List<Article>>() {
                                @Override
@@ -58,6 +58,11 @@ public class FavouriteListPresenterImpl extends MvpBasePresenter<FavouriteListCo
                             }
                         });
         mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void loadNextNews() {
+
     }
 
     @Override

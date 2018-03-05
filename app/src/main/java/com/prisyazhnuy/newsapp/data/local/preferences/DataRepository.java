@@ -43,7 +43,7 @@ public class DataRepository implements PreferencesSource {
 
     @Override
     public void setCheckedSources(String sources) {
-        mSharedPreferences.edit().putString(SOURCES, "").apply();
+        mSharedPreferences.edit().putString(SOURCES, sources).apply();
     }
 
     @Override
@@ -53,7 +53,7 @@ public class DataRepository implements PreferencesSource {
 
     @Override
     public void setDateFrom(String from) {
-        mSharedPreferences.edit().putString(FROM, "").apply();
+        mSharedPreferences.edit().putString(FROM, from).apply();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class DataRepository implements PreferencesSource {
 
     @Override
     public void setDateTo(String to) {
-        mSharedPreferences.edit().putString(TO, "").apply();
+        mSharedPreferences.edit().putString(TO, to).apply();
     }
 
     @Override

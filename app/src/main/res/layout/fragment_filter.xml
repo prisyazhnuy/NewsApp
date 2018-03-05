@@ -12,22 +12,14 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="130dp"
             android:layout_margin="@dimen/margin_8">
-
-            <TextView
-                android:id="@+id/tvFilterTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/filter_title" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/llDateFilter"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@id/tvFilterTitle"
                 android:layout_toLeftOf="@+id/llDateFilter"
                 android:layout_toStartOf="@+id/llDateFilter"
                 android:orientation="vertical">
@@ -40,7 +32,7 @@
                 <ListView
                     android:id="@+id/lvSources"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:choiceMode="multipleChoice">
 
                 </ListView>
@@ -53,7 +45,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_below="@id/tvFilterTitle"
                 android:orientation="vertical">
 
                 <TextView

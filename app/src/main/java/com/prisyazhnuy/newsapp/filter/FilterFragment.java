@@ -134,6 +134,16 @@ public class FilterFragment extends MvpFragment<FilterContract.FilterView, Filte
                 }
             }
         });
+        if (mCheckedSources != null && !mCheckedSources.isEmpty()) {
+            for (int i = 0; i < sources.size(); i++) {
+                if (mCheckedSources.contains(sources.get(i).getId())) {
+                    mLvSources.setItemChecked(i, true);
+                }
+            }
+        }
+        if (mListener != null) {
+            mListener.onFilterChanged();
+        }
     }
 
     @Override

@@ -137,7 +137,9 @@ public class FilterPresenterImpl extends MvpBasePresenter<FilterContract.FilterV
             for (String source : sources) {
                 sourcesBuilder.append(source).append(",");
             }
-            sourcesBuilder.deleteCharAt(checkedSources.length() - 1);
+            if (sourcesBuilder.length() > 0) {
+                sourcesBuilder.deleteCharAt(sourcesBuilder.length() - 1);
+            }
             mPreferencesSource.setCheckedSources(sourcesBuilder.toString());
         } else {
             mPreferencesSource.setCheckedSources(id);

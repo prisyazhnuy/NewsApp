@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.prisyazhnuy.newsapp.data.pojo.Article;
 import com.prisyazhnuy.newsapp.filter.FilterFragment;
+import com.prisyazhnuy.newsapp.news_list.NewsListContract;
 import com.prisyazhnuy.newsapp.news_list.NewsListFragment;
 import com.prisyazhnuy.newsapp.sort.SortFragment;
 
@@ -38,7 +39,10 @@ public class MainActivity extends AppCompatActivity
         NewsListFragment newsListFrag = (NewsListFragment)
                 getSupportFragmentManager().findFragmentById(R.id.newsListFragment);
         if (newsListFrag != null) {
-            newsListFrag.getPresenter().loadNews();
+            NewsListContract.NewsListPresenter<NewsListContract.NewsListView> presenter = newsListFrag.getPresenter();
+            if (presenter != null) {
+                presenter.loadBreakNews();
+            }
         }
     }
 }

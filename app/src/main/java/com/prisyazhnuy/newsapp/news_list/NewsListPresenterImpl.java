@@ -32,15 +32,16 @@ public class NewsListPresenterImpl extends MvpBasePresenter<NewsListContract.New
     private NewsModel mNewsModel;
     private PreferencesSource mDataSource;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-    private int mPage = 0;
+    private int mPage = 1;
+    private boolean mLoading;
 
     public NewsListPresenterImpl(NewsModel newsModel, PreferencesSource source) {
         this.mNewsModel = newsModel;
         this.mDataSource = source;
     }
 
-    @Override
-    public void loadNews() {
+    private void loadNews() {
+        mLoading = true;
         String checkedSources = mDataSource.getCheckedSources();
         String dateFrom = mDataSource.getDateFrom();
         String dateTo = mDataSource.getDateTo();
@@ -64,6 +65,7 @@ public class NewsListPresenterImpl extends MvpBasePresenter<NewsListContract.New
                         ifViewAttached(new ViewAction<NewsListContract.NewsListView>() {
                             @Override
                             public void run(@NonNull NewsListContract.NewsListView view) {
+                                mLoading = false;
                                 view.showNews(newsResponse.getArticles());
                             }
                         });
@@ -74,6 +76,7 @@ public class NewsListPresenterImpl extends MvpBasePresenter<NewsListContract.New
                         ifViewAttached(new ViewAction<NewsListContract.NewsListView>() {
                             @Override
                             public void run(@NonNull NewsListContract.NewsListView view) {
+                                mLoading = false;
                                 if (throwable instanceof HttpException) {
                                     try {
                                         view.showError(((HttpException) throwable).response().errorBody().string());
@@ -88,6 +91,28 @@ public class NewsListPresenterImpl extends MvpBasePresenter<NewsListContract.New
                     }
                 });
         mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void loadBreakNews() {
+        if (!mLoading) {
+            mPage = 1;
+            ifViewAttached(new ViewAction<NewsListContract.NewsListView>() {
+                @Override
+                public void run(@NonNull NewsListContract.NewsListView view) {
+                    view.clearList();
+                }
+            });
+            loadNews();
+        }
+    }
+
+    @Override
+    public void loadNextNews() {
+        if (!mLoading) {
+            mPage++;
+            loadNews();
+        }
     }
 
     @Override

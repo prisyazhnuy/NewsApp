@@ -26,6 +26,10 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
 
     private static final String TAG = "NewsListFragment";
     private RecyclerView mRecyclerView;
+    private NewsRecycleViewAdapter mNewsAdapter;
+    private int visibleThreshold = 5;
+    private int lastVisibleItem, totalItemCount;
+//    private boolean loading;
 
 
     private OnClickNewsItemListener mListener;
@@ -58,6 +62,33 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Context context = mRecyclerView.getContext();
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                lastVisibleItem = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                if (totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                    // End has been reached
+                    // Do something
+//                    if (onLoadMoreListener != null) {
+//                        onLoadMoreListener.onLoadMore();
+//                    }
+                    getPresenter().loadNextNews();
+//                    loading = true;
+                }
+            }
+        });
+        mNewsAdapter = new NewsRecycleViewAdapter(null, mListener);
+        mRecyclerView.setAdapter(mNewsAdapter);
     }
 
     @Override
@@ -79,9 +110,8 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
 
     @Override
     public void showNews(List<Article> articles) {
-        Context context = mRecyclerView.getContext();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mRecyclerView.setAdapter(new NewsRecycleViewAdapter(articles, mListener));
+        mNewsAdapter.addAll(articles);
+//        loading = false;
     }
 
     @Override
@@ -93,6 +123,11 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
     @Override
     public void showEmptyList() {
         Toast.makeText(getContext(), getString(R.string.no_news), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void clearList() {
+        mNewsAdapter.clear();
     }
 
     public interface OnClickNewsItemListener {

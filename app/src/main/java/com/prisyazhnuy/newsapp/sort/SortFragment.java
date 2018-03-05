@@ -83,7 +83,9 @@ public class SortFragment extends MvpFragment<SortContract.SortView, SortContrac
 
     @Override
     public void setPublishedDateChecked() {
-        mGroupSort.check(R.id.rBtnDate);
+        if (mGroupSort != null) {
+            mGroupSort.check(R.id.rBtnDate);
+        }
         if (mListener != null) {
             mListener.onSortChanged();
         }
@@ -91,7 +93,9 @@ public class SortFragment extends MvpFragment<SortContract.SortView, SortContrac
 
     @Override
     public void setPopularityChecked() {
-        mGroupSort.check(R.id.rBtnPopularity);
+        if (mGroupSort != null) {
+            mGroupSort.check(R.id.rBtnPopularity);
+        }
         if (mListener != null) {
             mListener.onSortChanged();
         }

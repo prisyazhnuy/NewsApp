@@ -11,6 +11,7 @@ import com.prisyazhnuy.newsapp.R;
 import com.prisyazhnuy.newsapp.data.pojo.Article;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,11 +20,11 @@ import java.util.List;
 
 public class NewsRecycleViewAdapter extends RecyclerView.Adapter<NewsRecycleViewAdapter.ViewHolder> {
 
-    private final List<Article> mValues;
+    private List<Article> mValues;
     private final NewsListFragment.OnClickNewsItemListener mListener;
 
     public NewsRecycleViewAdapter(List<Article> items, NewsListFragment.OnClickNewsItemListener listener) {
-        mValues = items;
+        mValues = new ArrayList<>();
         mListener = listener;
     }
 
@@ -31,7 +32,8 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter<NewsRecycleView
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.news_item, parent, false);
-        return new ViewHolder(view);    }
+        return new ViewHolder(view);
+    }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
@@ -57,6 +59,17 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter<NewsRecycleView
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    public void clear() {
+        final int size = mValues.size();
+        mValues.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
+    public void addAll(List<Article> articles) {
+        mValues.addAll(articles);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
