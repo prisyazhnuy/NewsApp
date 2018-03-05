@@ -1,6 +1,7 @@
 package com.prisyazhnuy.newsapp.news_list;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 import com.prisyazhnuy.newsapp.R;
 import com.prisyazhnuy.newsapp.data.NewsRepository;
@@ -137,6 +140,10 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
 
     @Override
     public void onShareClicked(Article item) {
-
+        ShareLinkContent content = new ShareLinkContent.Builder()
+                .setContentUrl(Uri.parse(item.getUrl()))
+                .build();
+        ShareDialog shareDialog = new ShareDialog(this);
+        shareDialog.show(content, ShareDialog.Mode.AUTOMATIC);
     }
 }
