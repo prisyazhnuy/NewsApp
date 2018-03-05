@@ -4,6 +4,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,9 +24,9 @@ import java.util.List;
 public class NewsRecycleViewAdapter extends RecyclerView.Adapter<NewsRecycleViewAdapter.ViewHolder> {
 
     private List<Article> mValues;
-    private final NewsListFragment.OnClickNewsItemListener mListener;
+    private final NewsInteractionListener mListener;
 
-    public NewsRecycleViewAdapter(List<Article> items, NewsListFragment.OnClickNewsItemListener listener) {
+    public NewsRecycleViewAdapter(List<Article> items, NewsInteractionListener listener) {
         mValues = new ArrayList<>();
         mListener = listener;
     }
@@ -54,6 +57,22 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter<NewsRecycleView
                 }
             }
         });
+        holder.mCbFavourite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (mListener != null) {
+                    mListener.onItemChecked(holder.mItem);
+                }
+            }
+        });
+        holder.mBtnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onShareClicked(holder.mItem);
+                }
+            }
+        });
     }
 
     @Override
@@ -72,19 +91,33 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter<NewsRecycleView
         notifyDataSetChanged();
     }
 
+    public void removeItem(long id) {
+        for (int i = 0; i < mValues.size(); i++) {
+            if (mValues.get(i).getId() == id) {
+                mValues.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public Article mItem;
         public final View mView;
         public final TextView mTvTitle;
         public final TextView mTvDescription;
         public final ImageView mIvIcon;
+        public final ImageButton mBtnShare;
+        public final CheckBox mCbFavourite;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mTvTitle = (TextView) view.findViewById(R.id.tvTitle);
-            mTvDescription = (TextView) view.findViewById(R.id.tvDescription);
+            mTvTitle = view.findViewById(R.id.tvTitle);
+            mTvDescription = view.findViewById(R.id.tvDescription);
             mIvIcon = view.findViewById(R.id.ivIcon);
+            mBtnShare = view.findViewById(R.id.btnShare);
+            mCbFavourite = view.findViewById(R.id.cbIsFavourite);
         }
     }
 }

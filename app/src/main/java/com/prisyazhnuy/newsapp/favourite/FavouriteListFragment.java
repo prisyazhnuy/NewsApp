@@ -1,4 +1,4 @@
-package com.prisyazhnuy.newsapp.news_list;
+package com.prisyazhnuy.newsapp.favourite;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,33 +13,28 @@ import android.widget.Toast;
 
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 import com.prisyazhnuy.newsapp.R;
-import com.prisyazhnuy.newsapp.data.NewsRepository;
 import com.prisyazhnuy.newsapp.data.local.db.NewsDAORealm;
-import com.prisyazhnuy.newsapp.data.local.preferences.DataRepository;
 import com.prisyazhnuy.newsapp.data.pojo.Article;
-import com.prisyazhnuy.newsapp.data.remote.RestClient;
+import com.prisyazhnuy.newsapp.news_list.NewsInteractionListener;
+import com.prisyazhnuy.newsapp.news_list.NewsListContract;
+import com.prisyazhnuy.newsapp.news_list.NewsRecycleViewAdapter;
 
 import java.util.List;
 
-public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView, NewsListContract.NewsListPresenter>
-        implements NewsListContract.NewsListView, NewsInteractionListener {
+public class FavouriteListFragment extends MvpFragment<NewsListContract.NewsListView,
+        NewsListContract.NewsListPresenter> implements NewsListContract.NewsListView, NewsInteractionListener {
 
-    private static final String TAG = "NewsListFragment";
+    private NewsInteractionListener mListener;
     private RecyclerView mRecyclerView;
     private NewsRecycleViewAdapter mNewsAdapter;
-    private int visibleThreshold = 5;
-    private int lastVisibleItem, totalItemCount;
 
-//    private NewsInteractionListener mListener;
-
-    public NewsListFragment() {
+    public FavouriteListFragment() {
     }
 
     @NonNull
     @Override
     public NewsListContract.NewsListPresenter createPresenter() {
-        return new NewsListPresenterImpl(NewsRepository.getInstance(RestClient.create()),
-                DataRepository.getInstance(getContext()), NewsDAORealm.getInstance(getContext().getCacheDir().getPath()));
+        return new FavouriteListPresenterImpl(NewsDAORealm.getInstance(getContext().getCacheDir().getPath()));
     }
 
     @Override
@@ -62,41 +56,31 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
         }
         Context context = mRecyclerView.getContext();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                totalItemCount = recyclerView.getLayoutManager().getItemCount();
-                lastVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                if (totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                    getPresenter().loadNextNews();
-                }
-            }
-        });
         mNewsAdapter = new NewsRecycleViewAdapter(null, this);
         mRecyclerView.setAdapter(mNewsAdapter);
+        getPresenter().loadBreakNews();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof NewsInteractionListener) {
-//            mListener = (NewsInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnSortChangedListener");
-//        }
+        if (context instanceof NewsInteractionListener) {
+            mListener = (NewsInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
+        mListener = null;
+    }
+
+    @Override
+    public void delete(long id) {
+        mNewsAdapter.removeItem(id);
     }
 
     @Override
@@ -106,7 +90,6 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
 
     @Override
     public void showError(String message) {
-        Log.d(TAG, "Network error");
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
@@ -121,18 +104,13 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
     }
 
     @Override
-    public void delete(long id) {
-
-    }
-
-    @Override
     public void onItemClicked(Article item) {
-
+        mListener.onItemClicked(item);
     }
 
     @Override
     public void onItemChecked(Article item) {
-        getPresenter().saveNews(item);
+        getPresenter().delete(item.getId());
     }
 
     @Override

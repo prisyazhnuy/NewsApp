@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".favourite.FavouriteListActivity" />
-        <activity android:name=".BrowserActivity"></activity>
+        <activity android:name=".BrowserActivity"/>
     </application>
 
 </manifest>

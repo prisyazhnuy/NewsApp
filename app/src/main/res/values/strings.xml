@@ -14,4 +14,5 @@
     <string name="date_to_title">To:</string>
     <string name="no_sources">Empty source list</string>
     <string name="no_news">There is no news</string>
+    <string name="menu_favourites">Favourites</string>
 </resources>

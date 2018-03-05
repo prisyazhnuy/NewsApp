@@ -4,7 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.prisyazhnuy.newsapp.data.NewsModel;
+import com.prisyazhnuy.newsapp.data.local.db.NewsDAO;
 import com.prisyazhnuy.newsapp.data.local.preferences.PreferencesSource;
+import com.prisyazhnuy.newsapp.data.pojo.Article;
 import com.prisyazhnuy.newsapp.data.pojo.NewsResponse;
 
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
@@ -21,7 +24,7 @@ import retrofit2.HttpException;
  */
 
 public class NewsListPresenterImpl extends MvpBasePresenter<NewsListContract.NewsListView>
-        implements NewsListContract.NewsListPresenter<NewsListContract.NewsListView> {
+        implements NewsListContract.NewsListPresenter {
 
     private static final int PUBLISHED_DATE_ID = 0;
     private static final int POPULARITY_ID = 1;
@@ -31,13 +34,15 @@ public class NewsListPresenterImpl extends MvpBasePresenter<NewsListContract.New
     private static final int PAGE_SIZE = 25;
     private NewsModel mNewsModel;
     private PreferencesSource mDataSource;
+    private NewsDAO mNewsDAO;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private int mPage = 1;
     private boolean mLoading;
 
-    public NewsListPresenterImpl(NewsModel newsModel, PreferencesSource source) {
+    public NewsListPresenterImpl(NewsModel newsModel, PreferencesSource source, NewsDAO dao) {
         this.mNewsModel = newsModel;
         this.mDataSource = source;
+        this.mNewsDAO = dao;
     }
 
     private void loadNews() {
@@ -113,6 +118,30 @@ public class NewsListPresenterImpl extends MvpBasePresenter<NewsListContract.New
             mPage++;
             loadNews();
         }
+    }
+
+    @Override
+    public void saveNews(Article item) {
+        Disposable disposable = mNewsDAO.insert(item)
+                .subscribe();
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void delete(final long id) {
+        Disposable disposable = mNewsDAO.delete(id)
+                .subscribe(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        ifViewAttached(new ViewAction<NewsListContract.NewsListView>() {
+                            @Override
+                            public void run(@NonNull NewsListContract.NewsListView view) {
+                                view.delete(id);
+                            }
+                        });
+                    }
+                });
+        mCompositeDisposable.add(disposable);
     }
 
     @Override

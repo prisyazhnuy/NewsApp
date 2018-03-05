@@ -20,11 +20,19 @@ public interface NewsListContract {
         void showEmptyList();
 
         void clearList();
+
+        void delete(long id);
+
     }
 
-    interface NewsListPresenter<T extends MvpView> extends MvpPresenter<T> {
+    interface NewsListPresenter extends MvpPresenter<NewsListView> {
         void loadBreakNews();
 
         void loadNextNews();
+
+        void saveNews(Article item);
+
+        void delete(long id);
+
     }
 }

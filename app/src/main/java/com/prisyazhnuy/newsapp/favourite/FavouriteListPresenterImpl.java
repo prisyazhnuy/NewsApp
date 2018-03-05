@@ -18,8 +18,8 @@ import io.reactivex.functions.Consumer;
  * max.pr on 04.03.2018.
  */
 
-public class FavouriteListPresenterImpl extends MvpBasePresenter<FavouriteListContract.FavouriteListView>
-        implements FavouriteListContract.FavouriteListPresenter {
+public class FavouriteListPresenterImpl extends MvpBasePresenter<NewsListContract.NewsListView>
+        implements NewsListContract.NewsListPresenter {
 
     private final NewsDAO mNewsDAO;
     private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
@@ -34,9 +34,9 @@ public class FavouriteListPresenterImpl extends MvpBasePresenter<FavouriteListCo
                 .subscribe(new Consumer<List<Article>>() {
                                @Override
                                public void accept(final List<Article> articles) throws Exception {
-                                   ifViewAttached(new ViewAction<FavouriteListContract.FavouriteListView>() {
+                                   ifViewAttached(new ViewAction<NewsListContract.NewsListView>() {
                                        @Override
-                                       public void run(@NonNull FavouriteListContract.FavouriteListView view) {
+                                       public void run(@NonNull NewsListContract.NewsListView view) {
                                            if (articles == null || articles.isEmpty()) {
                                                view.showEmptyList();
                                            } else {
@@ -49,9 +49,9 @@ public class FavouriteListPresenterImpl extends MvpBasePresenter<FavouriteListCo
                         , new Consumer<Throwable>() {
                             @Override
                             public void accept(final Throwable throwable) throws Exception {
-                                ifViewAttached(new ViewAction<FavouriteListContract.FavouriteListView>() {
+                                ifViewAttached(new ViewAction<NewsListContract.NewsListView>() {
                                     @Override
-                                    public void run(@NonNull FavouriteListContract.FavouriteListView view) {
+                                    public void run(@NonNull NewsListContract.NewsListView view) {
                                         view.showError(throwable.getMessage());
                                     }
                                 });
@@ -66,14 +66,19 @@ public class FavouriteListPresenterImpl extends MvpBasePresenter<FavouriteListCo
     }
 
     @Override
+    public void saveNews(Article item) {
+
+    }
+
+    @Override
     public void delete(final long id) {
         Disposable disposable = mNewsDAO.delete(id)
                 .subscribe(new Action() {
                     @Override
                     public void run() throws Exception {
-                        ifViewAttached(new ViewAction<FavouriteListContract.FavouriteListView>() {
+                        ifViewAttached(new ViewAction<NewsListContract.NewsListView>() {
                             @Override
-                            public void run(@NonNull FavouriteListContract.FavouriteListView view) {
+                            public void run(@NonNull NewsListContract.NewsListView view) {
                                 view.delete(id);
                             }
                         });
