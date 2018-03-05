@@ -1,5 +1,6 @@
 package com.prisyazhnuy.newsapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -22,7 +23,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onItemClicked(Article item) {
-
+        Intent browser = new Intent(this, BrowserActivity.class);
+        browser.putExtra("url", item.getUrl());
+        startActivity(browser);
     }
 
     @Override
