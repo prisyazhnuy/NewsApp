@@ -1,6 +1,8 @@
 package com.prisyazhnuy.newsapp.favourite;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
+import com.prisyazhnuy.newsapp.BrowserActivity;
 import com.prisyazhnuy.newsapp.R;
 import com.prisyazhnuy.newsapp.data.local.db.NewsDAORealm;
 import com.prisyazhnuy.newsapp.data.pojo.Article;
@@ -24,7 +29,6 @@ import java.util.List;
 public class FavouriteListFragment extends MvpFragment<NewsListContract.NewsListView,
         NewsListContract.NewsListPresenter> implements NewsListContract.NewsListView, NewsInteractionListener {
 
-    private NewsInteractionListener mListener;
     private RecyclerView mRecyclerView;
     private NewsRecycleViewAdapter mNewsAdapter;
 
@@ -64,18 +68,11 @@ public class FavouriteListFragment extends MvpFragment<NewsListContract.NewsList
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof NewsInteractionListener) {
-            mListener = (NewsInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -105,7 +102,9 @@ public class FavouriteListFragment extends MvpFragment<NewsListContract.NewsList
 
     @Override
     public void onItemClicked(Article item) {
-        mListener.onItemClicked(item);
+        Intent browser = new Intent(getContext(), BrowserActivity.class);
+        browser.putExtra("url", item.getUrl());
+        startActivity(browser);
     }
 
     @Override
@@ -115,6 +114,10 @@ public class FavouriteListFragment extends MvpFragment<NewsListContract.NewsList
 
     @Override
     public void onShareClicked(Article item) {
-
+        ShareLinkContent content = new ShareLinkContent.Builder()
+                .setContentUrl(Uri.parse(item.getUrl()))
+                .build();
+        ShareDialog shareDialog = new ShareDialog(this);
+        shareDialog.show(content, ShareDialog.Mode.AUTOMATIC);
     }
 }

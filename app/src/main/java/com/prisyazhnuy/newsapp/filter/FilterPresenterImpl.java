@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -44,7 +43,7 @@ public class FilterPresenterImpl extends MvpBasePresenter<FilterContract.FilterV
 
     @Override
     public void loadSources() {
-        Disposable disposable = mNewsSourceModel.getSources(null, null, "ru")
+        Disposable disposable = mNewsSourceModel.getSources(null, null, "us")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<SourcesResponse>() {

@@ -65,7 +65,7 @@ public class FilterFragment extends MvpFragment<FilterContract.FilterView, Filte
             @Override
             public void onClick(View view) {
                 final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR) - 1;
+                int year = c.get(Calendar.YEAR);
                 int month = c.get(Calendar.MONTH);
                 int day = c.get(Calendar.DAY_OF_MONTH);
 
@@ -84,7 +84,7 @@ public class FilterFragment extends MvpFragment<FilterContract.FilterView, Filte
             @Override
             public void onClick(View view) {
                 final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR) - 1;
+                int year = c.get(Calendar.YEAR);
                 int month = c.get(Calendar.MONTH);
                 int day = c.get(Calendar.DAY_OF_MONTH);
 

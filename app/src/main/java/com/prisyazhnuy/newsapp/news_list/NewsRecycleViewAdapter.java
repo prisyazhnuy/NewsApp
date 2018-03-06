@@ -1,6 +1,7 @@
 package com.prisyazhnuy.newsapp.news_list;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.prisyazhnuy.newsapp.R;
 import com.prisyazhnuy.newsapp.data.pojo.Article;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +45,23 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter<NewsRecycleView
         holder.mItem = mValues.get(position);
         holder.mTvTitle.setText(mValues.get(position).getTitle());
         holder.mTvDescription.setText(mValues.get(position).getDescription());
-        Picasso.with(holder.mView.getContext())
-                .load(holder.mItem.getUrlToImage())
-                .resize(50, 50)
-                .centerCrop()
-                .into(holder.mIvIcon);
+        String path = holder.mItem.getUrlToImage();
+        if (!TextUtils.isEmpty(path)) {
+            if (path.startsWith("http")) {
+                Picasso.with(holder.mView.getContext())
+                        .load(path)
+                        .resize(50, 50)
+                        .centerCrop()
+                        .into(holder.mIvIcon);
+            } else {
+                Picasso.with(holder.mView.getContext())
+                        .load(new File(path))
+                        .resize(50, 50)
+                        .centerCrop()
+                        .into(holder.mIvIcon);
+            }
+        }
+
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

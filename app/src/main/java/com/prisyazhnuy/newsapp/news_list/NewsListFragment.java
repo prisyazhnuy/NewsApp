@@ -1,13 +1,14 @@
 package com.prisyazhnuy.newsapp.news_list;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
+import com.prisyazhnuy.newsapp.BrowserActivity;
 import com.prisyazhnuy.newsapp.R;
 import com.prisyazhnuy.newsapp.data.NewsRepository;
 import com.prisyazhnuy.newsapp.data.local.db.NewsDAORealm;
@@ -34,8 +36,6 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
 
-//    private NewsInteractionListener mListener;
-
     public NewsListFragment() {
     }
 
@@ -43,7 +43,8 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
     @Override
     public NewsListContract.NewsListPresenter createPresenter() {
         return new NewsListPresenterImpl(NewsRepository.getInstance(RestClient.create()),
-                DataRepository.getInstance(getContext()), NewsDAORealm.getInstance(getContext().getCacheDir().getPath()));
+                DataRepository.getInstance(getContext()),
+                NewsDAORealm.getInstance(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath()));
     }
 
     @Override
@@ -88,18 +89,11 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof NewsInteractionListener) {
-//            mListener = (NewsInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnSortChangedListener");
-//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
     }
 
     @Override
@@ -109,8 +103,7 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
 
     @Override
     public void showError(String message) {
-        Log.d(TAG, "Network error");
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), getString(R.string.connection_error), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -130,7 +123,9 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
 
     @Override
     public void onItemClicked(Article item) {
-
+        Intent browser = new Intent(getContext(), BrowserActivity.class);
+        browser.putExtra("url", item.getUrl());
+        startActivity(browser);
     }
 
     @Override

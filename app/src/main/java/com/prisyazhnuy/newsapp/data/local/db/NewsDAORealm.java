@@ -1,12 +1,15 @@
 package com.prisyazhnuy.newsapp.data.local.db;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
 import com.prisyazhnuy.newsapp.data.local.db.model.News;
 import com.prisyazhnuy.newsapp.data.pojo.Article;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,7 @@ import io.realm.Sort;
 
 public class NewsDAORealm implements NewsDAO {
 
+    private static final String TAG = "RealmDAO";
     private static NewsDAO sInstance;
     private final RealmConfiguration mConfig;
     private final String mCachePath;
@@ -57,23 +61,25 @@ public class NewsDAORealm implements NewsDAO {
                     @Override
                     public Article apply(Article article) throws Exception {
                         if (article.getUrlToImage() != null) {
-                            URL url = new URL(article.getUrlToImage());
-                            InputStream input = url.openStream();
                             try {
-                                String path = mCachePath + url.getPath();
-                                OutputStream output = new FileOutputStream(path);
-                                try {
-                                    byte[] buffer = new byte[2024];
-                                    int bytesRead = 0;
-                                    while ((bytesRead = input.read(buffer, 0, buffer.length)) >= 0) {
-                                        output.write(buffer, 0, bytesRead);
-                                    }
-                                } finally {
-                                    article.setUrlToImage(path);
-                                    output.close();
-                                }
-                            } finally {
-                                input.close();
+                                URL url = new URL(article.getUrlToImage());
+                                String filePath = url.getPath();
+                                String[] parts = filePath.split("/");
+
+                                String path = mCachePath + "/" + parts[parts.length - 1];
+                                File icon = new File(path);
+                                Log.d(TAG, "icon path: " + path);
+                                Log.d(TAG, "icon url: " + url);
+                                InputStream inputStream = url.openStream();   // Download Image from URL
+                                Log.d(TAG, "icon loaded");
+                                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                article.setUrlToImage(path);
+                                FileOutputStream out = new FileOutputStream(icon);
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                                out.flush();
+                                out.close();
+                            } catch (Exception e) {
+                                Log.e(TAG, "Exception: ", e);
                             }
                         }
                         return article;
@@ -84,6 +90,7 @@ public class NewsDAORealm implements NewsDAO {
                     public SingleSource<News> apply(Article article) throws Exception {
                         News news = new News();
                         news.setAuthor(article.getAuthor());
+                        news.setPathToImage(article.getUrlToImage());
                         news.setDescription(article.getDescription());
                         news.setPublishedAt(article.getPublishedAt());
                         news.setTitle(article.getTitle());
@@ -186,6 +193,5 @@ public class NewsDAORealm implements NewsDAO {
         })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-
     }
 }

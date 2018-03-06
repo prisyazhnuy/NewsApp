@@ -7,17 +7,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.prisyazhnuy.newsapp.data.pojo.Article;
 import com.prisyazhnuy.newsapp.favourite.FavouriteListActivity;
 import com.prisyazhnuy.newsapp.filter.FilterFragment;
-import com.prisyazhnuy.newsapp.news_list.NewsInteractionListener;
 import com.prisyazhnuy.newsapp.news_list.NewsListContract;
 import com.prisyazhnuy.newsapp.news_list.NewsListFragment;
 import com.prisyazhnuy.newsapp.sort.SortFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NewsInteractionListener,
-        SortFragment.OnSortChangedListener,
+        implements SortFragment.OnSortChangedListener,
         FilterFragment.OnFilterChangedListener {
 
     @Override
@@ -42,23 +39,6 @@ public class MainActivity extends AppCompatActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onItemClicked(Article item) {
-        Intent browser = new Intent(this, BrowserActivity.class);
-        browser.putExtra("url", item.getUrl());
-        startActivity(browser);
-    }
-
-    @Override
-    public void onItemChecked(Article item) {
-
-    }
-
-    @Override
-    public void onShareClicked(Article item) {
-
     }
 
     @Override
