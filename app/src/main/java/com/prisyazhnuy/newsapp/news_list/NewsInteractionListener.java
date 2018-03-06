@@ -9,7 +9,7 @@ import com.prisyazhnuy.newsapp.data.pojo.Article;
 public interface NewsInteractionListener {
     void onItemClicked(Article item);
 
-    void onItemChecked(Article item);
+    void onItemChecked(Article item, boolean isChecked);
 
     void onShareClicked(Article item);
 }

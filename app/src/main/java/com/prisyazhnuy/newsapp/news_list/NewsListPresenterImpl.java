@@ -10,6 +10,7 @@ import com.prisyazhnuy.newsapp.data.pojo.Article;
 import com.prisyazhnuy.newsapp.data.pojo.NewsResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -121,6 +122,23 @@ public class NewsListPresenterImpl extends MvpBasePresenter<NewsListContract.New
     }
 
     @Override
+    public void loadFavourites() {
+        Disposable disposable = mNewsDAO.getAll()
+                .subscribe(new Consumer<List<Article>>() {
+                    @Override
+                    public void accept(final List<Article> articles) throws Exception {
+                        ifViewAttached(new ViewAction<NewsListContract.NewsListView>() {
+                            @Override
+                            public void run(@NonNull NewsListContract.NewsListView view) {
+                                view.addFavourites(articles);
+                            }
+                        });
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
     public void saveNews(Article item) {
         Disposable disposable = mNewsDAO.insert(item)
                 .subscribe();
@@ -128,15 +146,15 @@ public class NewsListPresenterImpl extends MvpBasePresenter<NewsListContract.New
     }
 
     @Override
-    public void delete(final long id) {
-        Disposable disposable = mNewsDAO.delete(id)
+    public void delete(final String url) {
+        Disposable disposable = mNewsDAO.delete(url)
                 .subscribe(new Action() {
                     @Override
                     public void run() throws Exception {
                         ifViewAttached(new ViewAction<NewsListContract.NewsListView>() {
                             @Override
                             public void run(@NonNull NewsListContract.NewsListView view) {
-                                view.delete(id);
+                                view.delete(url);
                             }
                         });
                     }

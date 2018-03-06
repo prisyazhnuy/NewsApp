@@ -1,11 +1,14 @@
 package com.prisyazhnuy.newsapp.favourite;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,6 +32,7 @@ import java.util.List;
 public class FavouriteListFragment extends MvpFragment<NewsListContract.NewsListView,
         NewsListContract.NewsListPresenter> implements NewsListContract.NewsListView, NewsInteractionListener {
 
+    private static final int EXTERNAL_STORAGE_CODE = 100;
     private RecyclerView mRecyclerView;
     private NewsRecycleViewAdapter mNewsAdapter;
 
@@ -60,9 +64,24 @@ public class FavouriteListFragment extends MvpFragment<NewsListContract.NewsList
         }
         Context context = mRecyclerView.getContext();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mNewsAdapter = new NewsRecycleViewAdapter(null, this);
+        mNewsAdapter = new NewsRecycleViewAdapter(this);
         mRecyclerView.setAdapter(mNewsAdapter);
-        getPresenter().loadBreakNews();
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_CODE);
+        } else {
+            getPresenter().loadBreakNews();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case EXTERNAL_STORAGE_CODE: {
+                getPresenter().loadBreakNews();
+                break;
+            }
+        }
     }
 
     @Override
@@ -76,12 +95,18 @@ public class FavouriteListFragment extends MvpFragment<NewsListContract.NewsList
     }
 
     @Override
-    public void delete(long id) {
-        mNewsAdapter.removeItem(id);
+    public void delete(String url) {
+        mNewsAdapter.removeItem(url);
+    }
+
+    @Override
+    public void addFavourites(List<Article> articles) {
+
     }
 
     @Override
     public void showNews(List<Article> articles) {
+        mNewsAdapter.setFavourites(articles);
         mNewsAdapter.addAll(articles);
     }
 
@@ -108,8 +133,8 @@ public class FavouriteListFragment extends MvpFragment<NewsListContract.NewsList
     }
 
     @Override
-    public void onItemChecked(Article item) {
-        getPresenter().delete(item.getId());
+    public void onItemChecked(Article item, boolean isChecked) {
+        getPresenter().delete(item.getUrl());
     }
 
     @Override

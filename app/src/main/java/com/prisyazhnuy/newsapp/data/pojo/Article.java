@@ -28,6 +28,15 @@ public class Article {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Article) {
+            return ((Article) obj).getUrl().equals(url);
+        } else {
+            return false;
+        }
+    }
+
     public long getId() {
         return id;
     }

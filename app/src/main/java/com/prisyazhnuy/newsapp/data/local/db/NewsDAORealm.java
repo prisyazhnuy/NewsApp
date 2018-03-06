@@ -75,7 +75,7 @@ public class NewsDAORealm implements NewsDAO {
                                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                                 article.setUrlToImage(path);
                                 FileOutputStream out = new FileOutputStream(icon);
-                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
                                 out.flush();
                                 out.close();
                             } catch (Exception e) {
@@ -121,15 +121,15 @@ public class NewsDAORealm implements NewsDAO {
     }
 
     @Override
-    public Completable delete(long id) {
-        return Single.just(id)
-                .flatMapMaybe(new Function<Long, MaybeSource<String>>() {
+    public Completable delete(String url) {
+        return Single.just(url)
+                .flatMapMaybe(new Function<String, MaybeSource<String>>() {
                     @Override
-                    public MaybeSource<String> apply(Long id) throws Exception {
+                    public MaybeSource<String> apply(String url) throws Exception {
                         String path = "";
                         Realm realm = Realm.getInstance(mConfig);
                         realm.beginTransaction();
-                        News news = realm.where(News.class).equalTo("id", id).findFirst();
+                        News news = realm.where(News.class).equalTo("url", url).findFirst();
                         if (news != null) {
                             path = news.getPathToImage();
                             news.deleteFromRealm();

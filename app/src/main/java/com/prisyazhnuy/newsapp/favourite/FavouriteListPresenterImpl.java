@@ -66,20 +66,25 @@ public class FavouriteListPresenterImpl extends MvpBasePresenter<NewsListContrac
     }
 
     @Override
+    public void loadFavourites() {
+
+    }
+
+    @Override
     public void saveNews(Article item) {
 
     }
 
     @Override
-    public void delete(final long id) {
-        Disposable disposable = mNewsDAO.delete(id)
+    public void delete(final String url) {
+        Disposable disposable = mNewsDAO.delete(url)
                 .subscribe(new Action() {
                     @Override
                     public void run() throws Exception {
                         ifViewAttached(new ViewAction<NewsListContract.NewsListView>() {
                             @Override
                             public void run(@NonNull NewsListContract.NewsListView view) {
-                                view.delete(id);
+                                view.delete(url);
                             }
                         });
                     }

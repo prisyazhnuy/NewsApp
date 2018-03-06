@@ -1,12 +1,15 @@
 package com.prisyazhnuy.newsapp.news_list;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,10 +34,13 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
         implements NewsListContract.NewsListView, NewsInteractionListener {
 
     private static final String TAG = "NewsListFragment";
+    private static final int SAVE_STORAGE_CODE = 100;
+    private static final int REMOVE_STORAGE_CODE = 101;
     private RecyclerView mRecyclerView;
     private NewsRecycleViewAdapter mNewsAdapter;
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
+    private Article mTempArticle;
 
     public NewsListFragment() {
     }
@@ -56,6 +62,12 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_news_list, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPresenter().loadFavourites();
     }
 
     @Override
@@ -82,7 +94,7 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
                 }
             }
         });
-        mNewsAdapter = new NewsRecycleViewAdapter(null, this);
+        mNewsAdapter = new NewsRecycleViewAdapter( this);
         mRecyclerView.setAdapter(mNewsAdapter);
     }
 
@@ -117,8 +129,14 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(String url) {
 
+    }
+
+    @Override
+    public void addFavourites(List<Article> articles) {
+        mNewsAdapter.setFavourites(articles);
+        mNewsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -129,8 +147,38 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
     }
 
     @Override
-    public void onItemChecked(Article item) {
-        getPresenter().saveNews(item);
+    public void onItemChecked(Article item, boolean isChecked) {
+        if (isChecked) {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                mTempArticle = item;
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, SAVE_STORAGE_CODE);
+            } else {
+                getPresenter().saveNews(item);
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                mTempArticle = item;
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REMOVE_STORAGE_CODE);
+            } else {
+                getPresenter().delete(item.getUrl());
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case SAVE_STORAGE_CODE: {
+                getPresenter().saveNews(mTempArticle);
+                break;
+            }
+            case REMOVE_STORAGE_CODE: {
+                getPresenter().delete(mTempArticle.getUrl());
+                break;
+            }
+        }
     }
 
     @Override

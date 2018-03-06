@@ -21,7 +21,9 @@ public interface NewsListContract {
 
         void clearList();
 
-        void delete(long id);
+        void delete(String url);
+
+        void addFavourites(List<Article> articles);
 
     }
 
@@ -30,9 +32,11 @@ public interface NewsListContract {
 
         void loadNextNews();
 
+        void loadFavourites();
+
         void saveNews(Article item);
 
-        void delete(long id);
+        void delete(String url);
 
     }
 }

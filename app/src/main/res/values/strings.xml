@@ -17,4 +17,5 @@
     <string name="no_news">There is no news</string>
     <string name="menu_favourites">Favourites</string>
     <string name="connection_error">Check internet connection or change search filter</string>
+    <string name="date">YYYY-MM-DD</string>
 </resources>

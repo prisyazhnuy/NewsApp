@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -148,7 +149,11 @@ public class FilterFragment extends MvpFragment<FilterContract.FilterView, Filte
 
     @Override
     public void setDateFrom(String from) {
-        mTvDateFrom.setText(from);
+        if (TextUtils.isEmpty(from)) {
+            mTvDateFrom.setText(R.string.date);
+        } else {
+            mTvDateFrom.setText(from);
+        }
         if (mListener != null) {
             mListener.onFilterChanged();
         }
@@ -156,7 +161,11 @@ public class FilterFragment extends MvpFragment<FilterContract.FilterView, Filte
 
     @Override
     public void setDateTo(String to) {
-        mTvDateTo.setText(to);
+        if (TextUtils.isEmpty(to)) {
+            mTvDateTo.setText(R.string.date);
+        } else {
+            mTvDateTo.setText(to);
+        }
         if (mListener != null) {
             mListener.onFilterChanged();
         }

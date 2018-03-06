@@ -26,11 +26,16 @@ import java.util.List;
 public class NewsRecycleViewAdapter extends RecyclerView.Adapter<NewsRecycleViewAdapter.ViewHolder> {
 
     private List<Article> mValues;
+    private List<Article> mFavourites;
     private final NewsInteractionListener mListener;
 
-    public NewsRecycleViewAdapter(List<Article> items, NewsInteractionListener listener) {
+    public NewsRecycleViewAdapter(NewsInteractionListener listener) {
         mValues = new ArrayList<>();
         mListener = listener;
+    }
+
+    public void setFavourites(List<Article> articles) {
+        this.mFavourites = articles;
     }
 
     @Override
@@ -71,11 +76,15 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter<NewsRecycleView
                 }
             }
         });
+        holder.mCbFavourite.setOnCheckedChangeListener(null);
+        if (mFavourites != null) {
+            holder.mCbFavourite.setChecked(mFavourites.contains(holder.mItem));
+        }
         holder.mCbFavourite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (mListener != null) {
-                    mListener.onItemChecked(holder.mItem);
+                    mListener.onItemChecked(holder.mItem, isChecked);
                 }
             }
         });
@@ -105,9 +114,9 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter<NewsRecycleView
         notifyDataSetChanged();
     }
 
-    public void removeItem(long id) {
+    public void removeItem(String url) {
         for (int i = 0; i < mValues.size(); i++) {
-            if (mValues.get(i).getId() == id) {
+            if (mValues.get(i).getUrl().equals(url)) {
                 mValues.remove(i);
                 notifyItemRemoved(i);
                 break;

@@ -15,7 +15,7 @@ public interface NewsDAO {
 
     Completable insert(Article article);
 
-    Completable delete(long id);
+    Completable delete(String url);
 
     Observable<List<Article>> getAll();
 }
