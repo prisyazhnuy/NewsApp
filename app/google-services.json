@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "401442734978",
+    "firebase_url": "https://newsapp-cbf31.firebaseio.com",
+    "project_id": "newsapp-cbf31",
+    "storage_bucket": "newsapp-cbf31.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:401442734978:android:3baa2e5c06143d76",
+        "android_client_info": {
+          "package_name": "com.prisyazhnuy.newsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "401442734978-jparjcv3ad6hk15d8qp42gumi6tgml8c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP9DEFzP_nKRdI8G3V6qUrWbX6KynXH4M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

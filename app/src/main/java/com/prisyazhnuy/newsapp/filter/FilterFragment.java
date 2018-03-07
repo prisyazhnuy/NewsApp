@@ -141,6 +141,11 @@ public class FilterFragment extends MvpFragment<FilterContract.FilterView, Filte
                     mLvSources.setItemChecked(i, true);
                 }
             }
+        } else {
+            if (!sources.isEmpty()) {
+                mLvSources.setItemChecked(0, true);
+                getPresenter().setSource(((Source) mLvSources.getAdapter().getItem(0)).getId());
+            }
         }
         if (mListener != null) {
             mListener.onFilterChanged();
@@ -178,7 +183,7 @@ public class FilterFragment extends MvpFragment<FilterContract.FilterView, Filte
 
     @Override
     public void showError(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), getString(R.string.connection_error), Toast.LENGTH_LONG).show();
     }
 
     @Override

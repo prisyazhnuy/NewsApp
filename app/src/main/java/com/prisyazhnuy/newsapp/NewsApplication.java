@@ -2,7 +2,7 @@ package com.prisyazhnuy.newsapp;
 
 import android.app.Application;
 
-import com.splunk.mint.Mint;
+//import com.splunk.mint.Mint;
 import io.realm.Realm;
 
 /**
@@ -15,6 +15,6 @@ public class NewsApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Realm.init(this);
-        Mint.initAndStartSession(this, "dc50571a");
+//        Mint.initAndStartSession(this, "dc50571a");
     }
 }

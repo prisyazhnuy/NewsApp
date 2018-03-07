@@ -60,6 +60,7 @@ public class NewsDAORealm implements NewsDAO {
                 .map(new Function<Article, Article>() {
                     @Override
                     public Article apply(Article article) throws Exception {
+                        Article articleCopy = new Article(article);
                         if (article.getUrlToImage() != null) {
                             try {
                                 URL url = new URL(article.getUrlToImage());
@@ -73,7 +74,7 @@ public class NewsDAORealm implements NewsDAO {
                                 InputStream inputStream = url.openStream();   // Download Image from URL
                                 Log.d(TAG, "icon loaded");
                                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                                article.setUrlToImage(path);
+                                articleCopy.setUrlToImage(path);
                                 FileOutputStream out = new FileOutputStream(icon);
                                 bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
                                 out.flush();
@@ -82,7 +83,7 @@ public class NewsDAORealm implements NewsDAO {
                                 Log.e(TAG, "Exception: ", e);
                             }
                         }
-                        return article;
+                        return articleCopy;
                     }
                 })
                 .flatMap(new Function<Article, SingleSource<News>>() {

@@ -100,9 +100,7 @@ public class FilterPresenterImpl extends MvpBasePresenter<FilterContract.FilterV
     }
 
     private String getDate(int year, int month, int day) {
-        TimeZone timeZone = TimeZone.getTimeZone("UTC");
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US); // Quoted "Z" to indicate UTC, no timezone offset
-        dateFormat.setTimeZone(timeZone);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Calendar calendar = new GregorianCalendar(year, month, day);
         return dateFormat.format(calendar.getTime());
     }

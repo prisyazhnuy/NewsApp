@@ -5,4 +5,8 @@
         android:icon="@drawable/ic_grade_checked"
         android:title="@string/menu_favourites"
         app:showAsAction="always"/>
+    <item android:id="@+id/invite"
+        android:icon="@drawable/ic_person_add_black_24dp"
+        android:title="@string/invitation_title"
+        app:showAsAction="always"/>
 </menu>

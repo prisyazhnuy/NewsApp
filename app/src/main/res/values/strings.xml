@@ -18,4 +18,9 @@
     <string name="menu_favourites">Favourites</string>
     <string name="connection_error">Check internet connection or change search filter</string>
     <string name="date">YYYY-MM-DD</string>
+    <string name="invitation_title">Invite</string>
+    <string name="invitation_message">Please install NewsApp</string>
+    <string name="invitation_deep_link">https://g8k9k.app.goo.gl</string>
+    <string name="successful_invitation">The invitation was sent</string>
+    <string name="failed_invitation">Can`t send invitation</string>
 </resources>

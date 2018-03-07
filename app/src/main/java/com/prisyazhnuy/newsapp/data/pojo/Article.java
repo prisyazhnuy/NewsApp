@@ -15,6 +15,19 @@ public class Article {
     private String urlToImage;
     private String publishedAt;
 
+    public Article() {}
+
+    public Article(Article article) {
+        this.id = article.getId();
+        this.source = article.getSource();
+        this.author = article.getAuthor();
+        this.title = article.getTitle();
+        this.description = article.getDescription();
+        this.url = article.getUrl();
+        this.urlToImage = article.getUrlToImage();
+        this.publishedAt = article.getPublishedAt();
+    }
+
     @Override
     public String toString() {
         return "Article{" +
