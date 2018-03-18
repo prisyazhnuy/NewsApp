@@ -1,5 +1,7 @@
 package com.prisyazhnuy.newsapp.data.pojo;
 
+import com.prisyazhnuy.newsapp.data2.News;
+
 /**
  * max.pr on 02.03.2018.
  */
@@ -16,6 +18,15 @@ public class Article {
     private String publishedAt;
 
     public Article() {}
+
+    public Article (News news) {
+        this.author = news.getAuthor();
+        this.title = news.getTitle();
+        this.description = news.getDescription();
+        this.url = news.getUrl();
+        this.urlToImage = news.getUrlToImage();
+        this.publishedAt = news.getPublishedAt();
+    }
 
     public Article(Article article) {
         this.id = article.getId();
