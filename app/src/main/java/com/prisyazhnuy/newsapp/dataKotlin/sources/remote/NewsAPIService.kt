@@ -1,4 +1,4 @@
-package com.prisyazhnuy.newsapp.data2.remote
+package com.prisyazhnuy.newsapp.dataKotlin.sources.remote
 
 import io.reactivex.Observable
 import retrofit2.http.GET

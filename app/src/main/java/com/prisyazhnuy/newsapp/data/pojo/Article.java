@@ -1,6 +1,6 @@
 package com.prisyazhnuy.newsapp.data.pojo;
 
-import com.prisyazhnuy.newsapp.data2.News;
+import com.prisyazhnuy.newsapp.dataKotlin.entity.News;
 
 /**
  * max.pr on 02.03.2018.

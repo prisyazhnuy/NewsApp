@@ -83,13 +83,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void reloadNews() {
-        NewsListFragment newsListFrag = (NewsListFragment)
-                getSupportFragmentManager().findFragmentById(R.id.newsListFragment);
-        if (newsListFrag != null) {
-            NewsListContract.NewsListPresenter presenter = newsListFrag.getPresenter();
-            if (presenter != null) {
-                presenter.loadBreakNews();
-            }
-        }
+//        NewsListFragment newsListFrag = (NewsListFragment)
+//                getSupportFragmentManager().findFragmentById(R.id.newsListFragment);
+//        if (newsListFrag != null) {
+//            NewsListContract.NewsListPresenter presenter = newsListFrag.getPresenter();
+//            if (presenter != null) {
+//                presenter.loadBreakNews();
+//            }
+//        }
     }
 }

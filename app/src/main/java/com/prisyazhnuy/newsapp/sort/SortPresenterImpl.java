@@ -23,19 +23,16 @@ public class SortPresenterImpl extends MvpBasePresenter<SortContract.SortView>
     @Override
     public void onLoad() {
         final int sortType = mPreferencesSource.getSort();
-        ifViewAttached(new ViewAction<SortContract.SortView>() {
-            @Override
-            public void run(@NonNull SortContract.SortView view) {
-                switch (sortType) {
-                    case PUBLISHED_DATE:
-                        view.setPublishedDateChecked();
-                        break;
-                    case POPULARITY:
-                        view.setPopularityChecked();
-                        break;
-                    default:
-                        view.setPublishedDateChecked();
-                }
+        ifViewAttached(view -> {
+            switch (sortType) {
+                case PUBLISHED_DATE:
+                    view.setPublishedDateChecked();
+                    break;
+                case POPULARITY:
+                    view.setPopularityChecked();
+                    break;
+                default:
+                    view.setPublishedDateChecked();
             }
         });
     }

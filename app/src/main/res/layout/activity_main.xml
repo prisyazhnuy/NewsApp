@@ -9,21 +9,21 @@
 
     <fragment
         android:id="@+id/sortFragment"
-        android:name="com.prisyazhnuy.newsapp.sort.SortFragment"
+        android:name="com.prisyazhnuy.newsapp.flow.sort.SortKotlinFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
     <fragment
         android:id="@+id/filterFragment"
-        android:name="com.prisyazhnuy.newsapp.filter.FilterFragment"
+        android:name="com.prisyazhnuy.newsapp.flow.filter.FilterKotlinFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
     <fragment
         android:id="@+id/newsListFragment"
-        android:name="com.prisyazhnuy.newsapp.news_list.NewsListFragment"
+        android:name="com.prisyazhnuy.newsapp.flow.newsList.NewsListKotlinFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -22,13 +21,7 @@ import com.facebook.share.widget.ShareDialog;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 import com.prisyazhnuy.newsapp.BrowserActivity;
 import com.prisyazhnuy.newsapp.R;
-import com.prisyazhnuy.newsapp.data.NewsRepository;
-import com.prisyazhnuy.newsapp.data.local.db.NewsDAORealm;
-import com.prisyazhnuy.newsapp.data.local.preferences.DataRepository;
 import com.prisyazhnuy.newsapp.data.pojo.Article;
-import com.prisyazhnuy.newsapp.data.remote.RestClient;
-import com.prisyazhnuy.newsapp.data2.remote.NewsRemoteRepository;
-import com.prisyazhnuy.newsapp.data2.remote.RestClientBuilder;
 
 import java.util.List;
 
@@ -50,7 +43,7 @@ public class NewsListFragment extends MvpFragment<NewsListContract.NewsListView,
     @NonNull
     @Override
     public NewsListContract.NewsListPresenter createPresenter() {
-        return new NewsListPresenter(new NewsRemoteRepository(RestClientBuilder.INSTANCE.getMNewsAPIService()));
+        return null;//new NewsListPresenter(new NewsRemoteRepository(RestClientBuilder.INSTANCE.getMNewsAPIService()));
 //        return new NewsListPresenterImpl(NewsRepository.getInstance(RestClient.create()),
 //                DataRepository.getInstance(getContext()),
 //                NewsDAORealm.getInstance(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath()));
