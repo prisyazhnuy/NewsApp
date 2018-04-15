@@ -1,4 +1,4 @@
-package com.prisyazhnuy.newsapp.dataKotlin.sources.db
+package com.prisyazhnuy.newsapp.dataKotlin.database
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.persistence.room.Room

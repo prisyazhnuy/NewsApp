@@ -2,6 +2,10 @@ package com.prisyazhnuy.newsapp.flow.filter
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.MutableLiveData
+import com.prisyazhnuy.newsapp.dataKotlin.SourceRepository
+import com.prisyazhnuy.newsapp.dataKotlin.SourceRepositoryImpl
+import com.prisyazhnuy.newsapp.dataKotlin.models.Source
 import com.prisyazhnuy.newsapp.dataKotlin.preferences.PreferencesRepository
 import java.text.SimpleDateFormat
 import java.util.*
@@ -12,6 +16,10 @@ import java.util.*
 class FilterViewModel(app: Application) : AndroidViewModel(app) {
 
     private val prefRepository = PreferencesRepository(app.applicationContext)
+    private val sourceRepo: SourceRepository = SourceRepositoryImpl
+
+    val sourceLiveData: MutableLiveData<List<Source>> = MutableLiveData()
+    val sourceErrorLiveData: MutableLiveData<Throwable> = MutableLiveData()
 
     val filterLiveData = FilterLiveData().apply {
         this.addSource(prefRepository.getSource()) { it ->
@@ -26,6 +34,12 @@ class FilterViewModel(app: Application) : AndroidViewModel(app) {
             it?.let { this.to = it }
 
         }
+    }
+
+    fun loadSources() {
+        sourceRepo.loadSourceList(null)
+                .subscribe({ sourceLiveData.value = it },
+                        { sourceErrorLiveData.value = it })
     }
 
     fun setSources(sources: String) {

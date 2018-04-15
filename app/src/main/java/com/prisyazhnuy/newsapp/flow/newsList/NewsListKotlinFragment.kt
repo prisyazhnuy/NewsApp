@@ -14,8 +14,8 @@ import com.facebook.share.model.ShareLinkContent
 import com.facebook.share.widget.ShareDialog
 import com.prisyazhnuy.newsapp.R
 import com.prisyazhnuy.newsapp.base.BaseLifecycleFragment
-import com.prisyazhnuy.newsapp.dataKotlin.entity.News
-import com.prisyazhnuy.newsapp.dataKotlin.preferences.PreferencesRepository
+import com.prisyazhnuy.newsapp.dataKotlin.database.entity.NewsEntity
+import com.prisyazhnuy.newsapp.dataKotlin.models.News
 import com.prisyazhnuy.newsapp.flow.filter.Filter
 import com.prisyazhnuy.newsapp.flow.filter.FilterViewModel
 import com.prisyazhnuy.newsapp.flow.sort.SortViewModel
@@ -48,7 +48,7 @@ class NewsListKotlinFragment : BaseLifecycleFragment<NewsViewModel>(), NewsAdapt
         recyclerView?.adapter = adapter
 
         if (savedInstanceState == null) {
-            viewModel.setFilter(Filter("lenta", null, null))
+//            viewModel.setFilter(Filter("lenta", null, null))
 //            viewModel.loadFavourite()
         }
 
@@ -80,14 +80,14 @@ class NewsListKotlinFragment : BaseLifecycleFragment<NewsViewModel>(), NewsAdapt
         viewModel.throwableLiveData.observe(this, Observer<Throwable?> {
             it?.let { Toast.makeText(context, "Error: ${it.message}", Toast.LENGTH_SHORT).show() }
         })
-        sortViewModel.getSort().observe(this, Observer<String> {
-            adapter.clean()
-            viewModel.setSort(it)
-        })
-        filterViewModel.filterLiveData.observe(this, Observer<Filter> {
-            adapter.clean()
-            viewModel.setFilter(it)
-        })
+//        sortViewModel.getSort().observe(this, Observer<String> {
+//            adapter.clean()
+//            viewModel.setSort(it)
+//        })
+//        filterViewModel.filterLiveData.observe(this, Observer<Filter> {
+//            adapter.clean()
+//            viewModel.setFilter(it)
+//        })
     }
 
     override fun shareNews(news: News) {

@@ -1,6 +1,6 @@
 package com.prisyazhnuy.newsapp.data.pojo;
 
-import com.prisyazhnuy.newsapp.dataKotlin.entity.News;
+import com.prisyazhnuy.newsapp.dataKotlin.database.entity.NewsEntity;
 
 /**
  * max.pr on 02.03.2018.
@@ -19,7 +19,7 @@ public class Article {
 
     public Article() {}
 
-    public Article (News news) {
+    public Article (NewsEntity news) {
         this.author = news.getAuthor();
         this.title = news.getTitle();
         this.description = news.getDescription();

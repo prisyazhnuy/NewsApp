@@ -5,7 +5,9 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import com.prisyazhnuy.newsapp.dataKotlin.NewsRepository
-import com.prisyazhnuy.newsapp.dataKotlin.entity.News
+import com.prisyazhnuy.newsapp.dataKotlin.NewsRepositoryImpl
+import com.prisyazhnuy.newsapp.dataKotlin.database.entity.NewsEntity
+import com.prisyazhnuy.newsapp.dataKotlin.models.News
 import com.prisyazhnuy.newsapp.flow.filter.Filter
 
 /**
@@ -47,9 +49,9 @@ class NewsViewModel(app: Application) : AndroidViewModel(app) {
 
     fun setFavourite(news: News, isFavourite: Boolean) {
         if (isFavourite) {
-            NewsRepository.addToFavourites(news)
+            NewsRepositoryImpl.addToFavourites(news)
         } else {
-            NewsRepository.removeFromFavourites(news)
+            NewsRepositoryImpl.removeFromFavourites(news)
         }
     }
 
@@ -59,10 +61,10 @@ class NewsViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun setSort(sortBy: String?) {
-        favouriteLiveData.value = false
+//        favouriteLiveData.value = false
         isLoadingLiveData.value = true
         page = 1
-        pageLiveData.value = page
+//        pageLiveData.value = page
         sortLiveData.value = sortBy
     }
 

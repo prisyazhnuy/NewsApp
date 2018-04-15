@@ -6,7 +6,7 @@ import com.bumptech.glide.Glide
 import com.prisyazhnuy.newsapp.R
 import com.prisyazhnuy.newsapp.base.BaseAdapter
 import com.prisyazhnuy.newsapp.base.BaseViewHolder
-import com.prisyazhnuy.newsapp.dataKotlin.entity.News
+import com.prisyazhnuy.newsapp.dataKotlin.models.News
 
 /**
  * max.pr on 01.04.2018.

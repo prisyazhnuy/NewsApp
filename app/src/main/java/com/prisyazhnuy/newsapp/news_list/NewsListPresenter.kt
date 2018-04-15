@@ -1,17 +1,14 @@
 package com.prisyazhnuy.newsapp.news_list
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
+import com.prisyazhnuy.newsapp.data.NewsRepository
 import com.prisyazhnuy.newsapp.data.pojo.Article
-import com.prisyazhnuy.newsapp.dataKotlin.NewsDataSource
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 /**
  * max.pr on 18.03.2018.
  */
-class NewsListPresenter(private val dataSource: NewsDataSource) : MvpBasePresenter<NewsListContract.NewsListView>(), NewsListContract.NewsListPresenter {
+class NewsListPresenter(private val dataSource: NewsRepository) : MvpBasePresenter<NewsListContract.NewsListView>(), NewsListContract.NewsListPresenter {
     private val disposable = CompositeDisposable()
 
     override fun loadBreakNews() {

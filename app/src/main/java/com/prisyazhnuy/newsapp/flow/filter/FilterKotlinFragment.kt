@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import com.prisyazhnuy.newsapp.R
 import com.prisyazhnuy.newsapp.base.BaseLifecycleFragment
+import com.prisyazhnuy.newsapp.dataKotlin.models.Source
 import java.util.*
 
 /**
@@ -54,9 +57,24 @@ class FilterKotlinFragment: BaseLifecycleFragment<FilterViewModel>() {
         }
 
         observeLiveData()
+
+        if (savedInstanceState == null) {
+            viewModel.loadSources()
+        }
     }
 
     private fun observeLiveData() {
+        viewModel.sourceLiveData.observe(this, Observer {sources ->
+            lvSources?.let {
+                val adapter = ArrayAdapter<Source>(context!!, android.R.layout.simple_list_item_multiple_choice, sources)
+                it.adapter = adapter
+            }
+        })
+        viewModel.sourceErrorLiveData.observe(this, Observer {
+            Toast.makeText(context, it?.localizedMessage, Toast.LENGTH_LONG).show()
+        })
+
+
         viewModel.filterLiveData.observe(this, Observer<Filter> {
             it?.let {
                 tvFrom?.text = it.from

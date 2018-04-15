@@ -1,6 +1,10 @@
-package com.prisyazhnuy.newsapp.dataKotlin.sources.remote
+package com.prisyazhnuy.newsapp.dataKotlin.network
 
 import com.prisyazhnuy.newsapp.BuildConfig
+import com.prisyazhnuy.newsapp.dataKotlin.network.api.NewsAPIService
+import com.prisyazhnuy.newsapp.dataKotlin.network.api.SourceApi
+import com.prisyazhnuy.newsapp.dataKotlin.network.repos.NewsNetworkRepoImpl
+import com.prisyazhnuy.newsapp.dataKotlin.network.repos.SourceNetworkRepoImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,7 +17,7 @@ import java.util.concurrent.TimeUnit
  */
 object RestClientBuilder {
     private val timeout = 10L
-    var mNewsAPIService: NewsAPIService
+    private var retrofit: Retrofit
 
     init {
         val logging = HttpLoggingInterceptor()
@@ -29,13 +33,15 @@ object RestClientBuilder {
         httpClient.readTimeout(timeout, TimeUnit.SECONDS)
         httpClient.writeTimeout(timeout, TimeUnit.SECONDS)
 
-        val retrofit = Retrofit.Builder()
+        retrofit = Retrofit.Builder()
                 .baseUrl(BuildConfig.API_URL)
                 .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
-
-        mNewsAPIService = retrofit.create(NewsAPIService::class.java)
     }
+
+    fun getNewsNetworkRepo() = NewsNetworkRepoImpl(retrofit.create(NewsAPIService::class.java))
+
+    fun getSourceNetworkRepo() = SourceNetworkRepoImpl(retrofit.create(SourceApi::class.java))
 }

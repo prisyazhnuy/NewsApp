@@ -1,7 +1,7 @@
 package com.prisyazhnuy.newsapp
 
 import android.app.Application
-import com.prisyazhnuy.newsapp.dataKotlin.sources.db.DataBaseCreator
+import com.prisyazhnuy.newsapp.dataKotlin.database.DataBaseCreator
 import io.realm.Realm
 
 /**
